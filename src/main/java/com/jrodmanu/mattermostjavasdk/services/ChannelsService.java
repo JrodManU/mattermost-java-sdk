@@ -3,6 +3,7 @@ package com.jrodmanu.mattermostjavasdk.services;
 import com.jrodmanu.mattermostjavasdk.MattermostProcessor;
 import com.jrodmanu.mattermostjavasdk.models.common.Channel;
 import com.jrodmanu.mattermostjavasdk.models.parameters.SearchChannelsParams;
+import com.jrodmanu.mattermostjavasdk.models.responses.MattermostResponse;
 
 public class ChannelsService extends MattermostService {
 
@@ -10,7 +11,7 @@ public class ChannelsService extends MattermostService {
         super(processor);
     }
 
-    public Channel[] searchChannels(SearchChannelsParams params) {
+    public MattermostResponse<Channel[]> searchChannels(SearchChannelsParams params) {
         if (params.teamId == null) {
             params.teamId = processor.getDefaultTeamId();
         }

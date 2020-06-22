@@ -3,6 +3,7 @@ package com.jrodmanu.mattermostjavasdk;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jrodmanu.mattermostjavasdk.models.responses.MattermostResponse;
 
 import java.io.IOException;
 import java.net.URI;
@@ -24,8 +25,8 @@ public class MattermostProcessor {
         this.baseUrl = baseUrl;
     }
 
-    public <T> T httpPost(String route, Object body, Class<T> responseType) {
-        T response = null;
+    public <T> MattermostResponse<T> httpPost(String route, Object body, Class<T> responseType) {
+        MattermostResponse<T> response = null;
         String bodyString = getGson().toJson(body);
         String uriString = baseUrl + route;
         try {
@@ -36,7 +37,7 @@ public class MattermostProcessor {
                     .uri(new URI(uriString))
                     .build();
             HttpResponse<String> responseRaw = getHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            response = getGson().fromJson(responseRaw.body(), responseType);
+            response = new MattermostResponse<>(getGson().fromJson(responseRaw.body(), responseType), responseRaw.statusCode());
         } catch(IOException |InterruptedException e) {
             System.out.println("Error sending httpPost to " + route);
             e.printStackTrace();
