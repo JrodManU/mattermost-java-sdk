@@ -1,6 +1,7 @@
 package com.jrodmanu.mattermostjavasdk.services;
 
 import com.jrodmanu.mattermostjavasdk.MattermostClient;
+import com.jrodmanu.mattermostjavasdk.models.exceptions.MattermostException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +13,14 @@ public class ChannelsServiceTest {
 
     @BeforeAll
     static void setup() {
-        client = new MattermostClient.Builder("https://mattermost.beepboop.com/api/v4")
-                .setAccessToken("beepboopbeep")
-                .setDefaultTeam("boop")
-                .build();
+        try {
+            client = new MattermostClient.Builder("https://mattermost.beepboop.com/api/v4")
+                    .setAccessToken("beepboopbeep")
+                    .setDefaultTeam("boop")
+                    .build();
+        } catch (MattermostException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
