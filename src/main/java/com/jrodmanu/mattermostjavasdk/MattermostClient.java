@@ -1,8 +1,8 @@
 package com.jrodmanu.mattermostjavasdk;
 
 import com.jrodmanu.mattermostjavasdk.models.common.Team;
+import com.jrodmanu.mattermostjavasdk.models.exceptions.MattermostException;
 import com.jrodmanu.mattermostjavasdk.services.ChannelsService;
-import com.jrodmanu.mattermostjavasdk.services.MacroService;
 import com.jrodmanu.mattermostjavasdk.services.PostsService;
 import com.jrodmanu.mattermostjavasdk.services.TeamsService;
 
@@ -29,13 +29,12 @@ public class MattermostClient {
             this.defaultTeamId = defaultTeamId;
             return this;
         }
-        public MattermostClient build() {
+        public MattermostClient build() throws MattermostException {
             MattermostClient client = new MattermostClient();
             client.processor = new MattermostProcessor(accessToken, baseUrl);
             client.channels = new ChannelsService(client.processor);
             client.posts = new PostsService(client.processor);
             client.teams = new TeamsService(client.processor);
-            client.macro = new MacroService(client, client.processor);
             if (defaultTeam != null) {
                 client.setDefaultTeam(defaultTeam);
             } else {
@@ -48,16 +47,19 @@ public class MattermostClient {
     public ChannelsService channels;
     public PostsService posts;
     public TeamsService teams;
-    public MacroService macro;
     private MattermostProcessor processor;
 
     private MattermostClient() {
 
     }
 
-    public void setDefaultTeam(String defaultTeam) {
+    public void setDefaultTeam(String defaultTeam) throws MattermostException {
         Team[] teamsArray = teams.searchTeams(defaultTeam);
-        setDefaultTeamId(teamsArray[0].id);
+        if (teamsArray.length > 0) {
+            setDefaultTeamId(teamsArray[0].id);
+        } else {
+            throw new MattermostException("Could not find team to set default team " + defaultTeam);
+        }
     }
 
     public void setDefaultTeamId(String defaultTeamId) {

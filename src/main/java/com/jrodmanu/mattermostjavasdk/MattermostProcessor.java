@@ -3,7 +3,8 @@ package com.jrodmanu.mattermostjavasdk;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.jrodmanu.mattermostjavasdk.models.responses.MattermostResponse;
+import com.jrodmanu.mattermostjavasdk.models.exceptions.MattermostException;
+import com.jrodmanu.mattermostjavasdk.models.responses.MattermostExceptionResponse;
 
 import java.io.IOException;
 import java.net.URI;
@@ -25,8 +26,8 @@ public class MattermostProcessor {
         this.baseUrl = baseUrl;
     }
 
-    public <T> MattermostResponse<T> httpPost(String route, Object body, Class<T> responseType) {
-        MattermostResponse<T> response = null;
+    public <T> T httpPost(String route, Object body, Class<T> responseType) throws MattermostException {
+        T response;
         String bodyString = getGson().toJson(body);
         String uriString = baseUrl + route;
         try {
@@ -37,12 +38,24 @@ public class MattermostProcessor {
                     .uri(new URI(uriString))
                     .build();
             HttpResponse<String> responseRaw = getHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            response = new MattermostResponse<>(getGson().fromJson(responseRaw.body(), responseType), responseRaw.statusCode());
+            // detect if error occurred
+            if (responseRaw.statusCode() >= 400) {
+                MattermostExceptionResponse exceptionResponse = getGson().fromJson(responseRaw.body(), MattermostExceptionResponse.class);
+                throw new MattermostException(exceptionResponse.statusCode + ": " + exceptionResponse.message);
+            } else {
+                // otherwise returned the data parsed into the right type
+                response = getGson().fromJson(responseRaw.body(), responseType);
+            }
         } catch(IOException |InterruptedException e) {
-            System.out.println("Error sending httpPost to " + route);
+            String message = "Error sending httpPost to " + route;
+            System.out.println(message);
             e.printStackTrace();
+            throw new MattermostException(message, e);
         } catch(URISyntaxException e) {
-            System.out.println("Tried to send httpPost but URI is invalid " + uriString);
+            String message = "Tried to send httpPost but URI is invalid " + uriString;
+            System.out.println(message);
+            e.printStackTrace();
+            throw new MattermostException(message, e);
         }
         return response;
     }

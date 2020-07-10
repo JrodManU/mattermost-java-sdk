@@ -12,7 +12,10 @@ public class ChannelsServiceTest {
 
     @BeforeAll
     static void setup() {
-        client = new MattermostClient("https://mattermost.testing.com/api/v4", "bestaccestokenever");
+        client = new MattermostClient.Builder("https://mattermost.beepboop.com/api/v4")
+                .setAccessToken("beepboopbeep")
+                .setDefaultTeam("boop")
+                .build();
     }
 
     @Test
