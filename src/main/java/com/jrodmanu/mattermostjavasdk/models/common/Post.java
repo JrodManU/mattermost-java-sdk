@@ -1,8 +1,11 @@
-package com.jrodmanu.mattermostjavasdk.models.responses;
+package com.jrodmanu.mattermostjavasdk.models.common;
 
 import com.jrodmanu.mattermostjavasdk.models.common.PostMetadata;
 
-public class CreatePostResponse {
+/**
+ * Representation of Mattermost post
+ */
+public class Post {
     public String id;
     public long createAt;
     public long updateAt;

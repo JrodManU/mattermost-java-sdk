@@ -2,3 +2,5 @@
 .idea
 build/
 src/main/java/Testing.java
+secret-keys.gpg
+gradle.properties

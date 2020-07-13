@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jrodmanu.mattermostjavasdk.models.exceptions.MattermostException;
 import com.jrodmanu.mattermostjavasdk.models.responses.MattermostExceptionResponse;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,6 +12,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * Used to process all requests sent to the Mattermost API
+ */
 public class MattermostProcessor {
 
     private HttpClient httpClient;
@@ -21,11 +23,25 @@ public class MattermostProcessor {
     private final String baseUrl;
     private String defaultTeamId;
 
+    /**
+     *
+     * @param accessToken access token used to authenticate with the Mattermost API
+     * @param baseUrl the API endpoint of the Mattermost server
+     */
     public MattermostProcessor(String accessToken, String baseUrl) {
         this.accessToken = accessToken;
         this.baseUrl = baseUrl;
     }
 
+    /**
+     * Sends a post request to the Mattermost API and parses the response.
+     * @param route The route to send the request to. Adds on to the api endpoint. Start with a /
+     * @param body The JSON body to send as part of the post request.
+     * @param responseType The type of class to parse the response into
+     * @param <T> The generic for the type of class to parse the response into.
+     * @return The response parsed into the type of class given
+     * @throws MattermostException when the http request returns an error or there is an error sending it
+     */
     public <T> T httpPost(String route, Object body, Class<T> responseType) throws MattermostException {
         T response;
         String bodyString = getGson().toJson(body);
@@ -46,7 +62,7 @@ public class MattermostProcessor {
                 // otherwise returned the data parsed into the right type
                 response = getGson().fromJson(responseRaw.body(), responseType);
             }
-        } catch(IOException |InterruptedException e) {
+        } catch(IOException | InterruptedException e) {
             String message = "Error sending httpPost to " + route;
             System.out.println(message);
             e.printStackTrace();
@@ -60,7 +76,10 @@ public class MattermostProcessor {
         return response;
     }
 
-    // creates the httpClient if not created already, returns it otherwise
+    /**
+     * Creates the http client if not created yet
+     * @return an HttpClient to send requests with.
+     */
     private HttpClient getHttpClient() {
         if (httpClient == null) {
             httpClient = HttpClient.newHttpClient();
@@ -68,7 +87,10 @@ public class MattermostProcessor {
         return httpClient;
     }
 
-    // creates the gson if not created already, returns it otherwise
+    /**
+     * Creates the gson tool if not create yet
+     * @return an Gson object to parse JSON with
+     */
     private Gson getGson() {
         if (gson == null) {
             gson = new GsonBuilder()
@@ -78,10 +100,16 @@ public class MattermostProcessor {
         return gson;
     }
 
+    /**
+     * @return the default team id
+     */
     public String getDefaultTeamId() {
         return defaultTeamId;
     }
 
+    /**
+     * @param defaultTeamId the new default team id
+     */
     public void setDefaultTeamId(String defaultTeamId) {
         this.defaultTeamId = defaultTeamId;
     }

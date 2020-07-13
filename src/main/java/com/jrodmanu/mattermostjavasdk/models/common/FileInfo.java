@@ -1,5 +1,8 @@
 package com.jrodmanu.mattermostjavasdk.models.common;
 
+/**
+ * Representation of Mattermost File
+ */
 public class FileInfo {
     public String id;
     public String userId;

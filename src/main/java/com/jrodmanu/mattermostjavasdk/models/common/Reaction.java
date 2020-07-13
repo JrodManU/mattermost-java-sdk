@@ -1,5 +1,8 @@
 package com.jrodmanu.mattermostjavasdk.models.common;
 
+/**
+ * Representation of Mattermost reaction
+ */
 public class Reaction {
     public String userId;
     public String postId;

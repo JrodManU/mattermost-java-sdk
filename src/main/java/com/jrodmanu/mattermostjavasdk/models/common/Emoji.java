@@ -1,5 +1,8 @@
 package com.jrodmanu.mattermostjavasdk.models.common;
 
+/**
+ * Representation of Mattermost Emoji
+ */
 public class Emoji {
     public String id;
     public String creatorId;

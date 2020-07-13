@@ -1,5 +1,8 @@
 package com.jrodmanu.mattermostjavasdk.models.common;
 
+/**
+ * Representation of Mattermost channel
+ */
 public class Channel {
     public String id;
     public long createAt;

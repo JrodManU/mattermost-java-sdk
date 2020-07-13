@@ -1,5 +1,8 @@
 package com.jrodmanu.mattermostjavasdk.models.common;
 
+/**
+ * Representation of Mattermost team
+ */
 public class Team {
     public String id;
     public long createAt;
