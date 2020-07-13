@@ -18,7 +18,7 @@ try {
 
     String channelId = client.channels.searchChannels(new SearchChannelsParams.Builder("your channel").build())[0].id;
 
-    CreatePostResponse createPostResponse = client.posts.createPost(
+    Post post = client.posts.createPost(
             new CreatePostParams.Builder("There is no need to be afraid")
                     .setChannelId(channelId)
                     .build()
