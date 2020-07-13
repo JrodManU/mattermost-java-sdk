@@ -5,11 +5,6 @@ Add mattermost-java-sdk with gradle
 ```
 implementation group: 'com.jrodmanu', name: 'mattermost-java-sdk', version: '1.2'
 ```
-This project relies on GSON
-```
-implementation 'com.google.code.gson:gson:2.+'
-```
-
 Example to send a message:
 ```
 try {
