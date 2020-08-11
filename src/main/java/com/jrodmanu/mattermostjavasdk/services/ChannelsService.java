@@ -4,6 +4,7 @@ import com.jrodmanu.mattermostjavasdk.MattermostProcessor;
 import com.jrodmanu.mattermostjavasdk.models.common.Channel;
 import com.jrodmanu.mattermostjavasdk.models.exceptions.MattermostException;
 import com.jrodmanu.mattermostjavasdk.models.parameters.CreateChannelParams;
+import com.jrodmanu.mattermostjavasdk.models.parameters.SearchAllChannelsParams;
 import com.jrodmanu.mattermostjavasdk.models.parameters.SearchChannelsParams;
 
 /**
@@ -43,6 +44,10 @@ public class ChannelsService extends MattermostService {
         if (params.teamId == null) {
             params.teamId = processor.getDefaultTeamId();
         }
-        return processor.httpPost("/channels", params.getCreateChannelBody(), Channel.class);
+        return processor.httpPost("/channels", params, Channel.class);
+    }
+
+    public Channel[] searchAllChannels(SearchAllChannelsParams params) throws MattermostException {
+        return processor.httpPost("/channels/search", params, Channel[].class);
     }
 }

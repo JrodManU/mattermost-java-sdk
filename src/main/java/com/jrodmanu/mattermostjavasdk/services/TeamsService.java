@@ -4,8 +4,6 @@ import com.jrodmanu.mattermostjavasdk.MattermostProcessor;
 import com.jrodmanu.mattermostjavasdk.models.bodies.SearchTermBody;
 import com.jrodmanu.mattermostjavasdk.models.common.Team;
 import com.jrodmanu.mattermostjavasdk.models.exceptions.MattermostException;
-import com.jrodmanu.mattermostjavasdk.models.parameters.SearchTeamsPaginatedParams;
-import com.jrodmanu.mattermostjavasdk.models.responses.SearchTeamsPaginatedResponse;
 
 /**
  * Service to handle all team related requests
@@ -18,16 +16,6 @@ public class TeamsService extends MattermostService {
      */
     public TeamsService(MattermostProcessor processor) {
         super(processor);
-    }
-
-    /**
-     * Searches for teams with pagination
-     * @param params a SearchTeamsPaginatedParams object
-     * @return returns a reponse object that has the results of the search and is paginated
-     * @throws MattermostException when the request fails
-     */
-    public SearchTeamsPaginatedResponse searchTeamsPaginated(SearchTeamsPaginatedParams params) throws MattermostException {
-        return processor.httpPost("/teams/search", params.getSearchTeamsPaginatedBody(), SearchTeamsPaginatedResponse.class);
     }
 
     /**

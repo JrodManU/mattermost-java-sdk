@@ -1,7 +1,5 @@
 package com.jrodmanu.mattermostjavasdk.models.parameters;
 
-import com.jrodmanu.mattermostjavasdk.models.bodies.CreateChannelBody;
-
 /**
  * Object passed to the mattermost-java-sdk to create a channel
  */
@@ -85,12 +83,5 @@ public class CreateChannelParams {
      */
     private CreateChannelParams() {
 
-    }
-
-    /**
-     * @return returns a body that can be sent the the Mattermost API
-     */
-    public CreateChannelBody getCreateChannelBody() {
-        return new CreateChannelBody(teamId, name, displayName, purpose, header, type);
     }
 }
