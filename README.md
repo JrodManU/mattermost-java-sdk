@@ -1,13 +1,10 @@
 # mattermost-java-sdk
 Warning, this project is in the early stages of development
 
-I am in the process of adding it to maven central
-
-This project relies on GSON
+Add mattermost-java-sdk with gradle
 ```
-implementation 'com.google.code.gson:gson:2.+'
+implementation group: 'com.jrodmanu', name: 'mattermost-java-sdk', version: '1.2'
 ```
-
 Example to send a message:
 ```
 try {
